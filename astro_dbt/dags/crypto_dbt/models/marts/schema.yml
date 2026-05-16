@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: mart_coin_summary
+    description: "One row per coin — full-period performance summary"
+    config:
+      materialized: table
+    columns:
+      - name: coin_id
+        tests: [not_null, unique]
+      - name: trading_days
+        tests: [not_null]
+      - name: stddev_daily_return_pct
+        description: "Std dev of daily returns — the standard volatility proxy"
+      - name: period_total_return_pct
+        description: "Compound return from first to last close in the period"
+
+  - name: mart_price_volatility
+    description: "Daily volatility metrics with 7d and 30d rolling windows"
+    config:
+      materialized: table
+    columns:
+      - name: coin_id
+        tests: [not_null]
+      - name: date
+        tests: [not_null]
+
+  - name: mart_daily_returns
+    description: "Daily OHLCV, returns, and cumulative return per coin"
+    config:
+      materialized: table
+    columns:
+      - name: date
+        tests: [not_null]
+      - name: coin_id
+        tests: [not_null]
+      - name: cumulative_return_pct
+        description: "Compound return from first date in the dataset to this row"

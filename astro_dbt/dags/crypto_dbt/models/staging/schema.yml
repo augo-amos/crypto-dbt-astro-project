@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_coins
+    description: "Cleaned coin metadata — one row per coin"
+    columns:
+      - name: coin_id
+        description: "Lowercase CoinGecko ID — primary identifier"
+        tests:
+          - not_null
+          - unique
+      - name: symbol
+        tests:
+          - not_null
+      - name: name
+        tests:
+          - not_null
+      - name: market_cap_rank
+        description: "Global market cap rank at time of extraction. Nullable — not all coins have a rank."
+
+  - name: stg_prices
+    description: "Cleaned daily OHLCV prices — one row per coin per day"
+    columns:
+      - name: coin_id
+        tests:
+          - not_null
+      - name: date
+        tests:
+          - not_null
+      - name: close_usd
+        tests:
+          - not_null
+      - name: intraday_range_pct
+        description: "(high - low) / open * 100. Percentage range of the day's price movement."

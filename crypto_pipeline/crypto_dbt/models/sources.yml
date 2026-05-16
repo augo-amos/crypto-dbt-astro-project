@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: raw
+    database: dbt_db
+    schema: dbt_schema
+    description: "Raw tables loaded by dbt seed from CoinGecko API CSV files"
+
+    # Freshness: warn if coin_metadata hasn't been seeded in 25h, error at 49h.
+    # Run: dbt source freshness
+    freshness:
+      warn_after:  {count: 25, period: hour}
+      error_after: {count: 49, period: hour}
+
+    tables:
+      - name: coin_metadata
+        loaded_at_field: extracted_at
+        description: "One row per coin — metadata from CoinGecko"
+        columns:
+          - name: coin_id
+            tests: [not_null, unique]
+
+      - name: historical_prices
+        loaded_at_field: extracted_at
+        description: "Daily OHLCV price data per coin for the last 90 days"
+        columns:
+          - name: coin_id
+            tests: [not_null]
+          - name: date
+            tests: [not_null]
+          - name: close_usd
+            tests: [not_null]

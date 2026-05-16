@@ -1,0 +1,55 @@
+version: 2
+
+seeds:
+  - name: coin_metadata
+    description: "Raw coin metadata seeded from CoinGecko API via Python"
+    config:
+      column_types:
+        # Without explicit types, dbt infers from the CSV.
+        # Inference is usually fine for strings and numbers, but dates
+        # and timestamps are often misread as VARCHAR. Specify them explicitly.
+        coin_id:           varchar
+        symbol:            varchar
+        name:              varchar
+        market_cap_rank:   number
+        description:       varchar
+        genesis_date:      date
+        hashing_algorithm: varchar
+        homepage:          varchar
+        extracted_at:      timestamp_ntz
+    columns:
+      - name: coin_id
+        description: "CoinGecko internal ID — e.g. 'bitcoin'"
+        tests:
+          - not_null
+          - unique
+      - name: symbol
+        tests:
+          - not_null
+      - name: name
+        tests:
+          - not_null
+
+  - name: historical_prices
+    description: "Raw daily OHLCV prices seeded from CoinGecko API via Python"
+    config:
+      column_types:
+        coin_id:        varchar
+        date:           date
+        open_usd:       float
+        high_usd:       float
+        low_usd:        float
+        close_usd:      float
+        volume_usd:     float
+        market_cap_usd: float
+        extracted_at:   timestamp_ntz
+    columns:
+      - name: coin_id
+        tests:
+          - not_null
+      - name: date
+        tests:
+          - not_null
+      - name: close_usd
+        tests:
+          - not_null
