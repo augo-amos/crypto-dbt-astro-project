@@ -229,7 +229,7 @@ The `astro_dbt/` folder is reserved for Apache Airflow (via Astro) orchestration
 
 *Documentation coming soon.*
 
-## 🛠️ Development Workflow
+## Development Workflow
 
 ### Adding a New Cryptocurrency
 
