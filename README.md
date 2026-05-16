@@ -2,7 +2,7 @@
 
 A production-grade data pipeline for cryptocurrency market analysis, combining **dbt** for data transformation, **Python** for API extraction, and **Astro** for orchestration.
 
-## 🎯 Overview
+## Overview
 
 This project fetches daily OHLCV (Open, High, Low, Close, Volume) price data and coin metadata from the **CoinGecko API**, transforms it using **dbt** with a carefully structured data warehouse architecture, and surfaces clean analytical datasets for dashboarding and backtesting.
 
@@ -15,7 +15,7 @@ This project fetches daily OHLCV (Open, High, Low, Close, Volume) price data and
 - **Source Freshness Checks**: Automated validation that raw data hasn't staled
 - **Scalable Architecture**: Easy to add new coins or extend metrics
 
-## 📊 Data Architecture
+## Data Architecture
 
 ```
 Raw Data (CSV Seeds)
@@ -61,7 +61,7 @@ Optimized for specific use cases:
   - Daily volatility rank (how volatile was this coin relative to peers?)
   - Rolling average return
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -124,7 +124,7 @@ Optimized for specific use cases:
    dbt test          # Validate data quality
    ```
 
-## 📝 Project Structure
+## Project Structure
 
 ```
 crypto-dbt-astro-project/
@@ -155,7 +155,7 @@ crypto-dbt-astro-project/
 └── astro_dbt/                  # Astro orchestration (future)
 ```
 
-## 🔑 Key Design Decisions
+## Key Design Decisions
 
 ### Window Functions for Efficiency
 - `LAG()` and `FIRST_VALUE()`/`LAST_VALUE()` compute returns and price ranges without joins
@@ -177,7 +177,7 @@ This accounts for compounding: a 10% gain followed by 10% loss ≠ 0% total retu
 - Change the formula once → all three marts update automatically
 - No duplicate code → no missed updates
 
-## 🧪 Data Quality
+## Data Quality
 
 ### dbt Tests
 - **Uniqueness**: `coin_id` is unique in staging
@@ -190,7 +190,7 @@ dbt source freshness
 ```
 Warns if raw data hasn't been updated in 25 hours; errors at 49 hours.
 
-## 📈 Sample Queries
+## Sample Queries
 
 **Top 5 performers over the period:**
 ```sql
@@ -219,7 +219,7 @@ where symbol = 'BTC'
 order by date desc;
 ```
 
-## 🔄 Orchestration (Astro)
+## Orchestration (Astro)
 
 The `astro_dbt/` folder is reserved for Apache Airflow (via Astro) orchestration:
 - Schedule daily data extraction
@@ -253,25 +253,25 @@ dbt run --models +int_*          # All intermediates
 dbt run --models staging.+       # Staging and downstream
 ```
 
-## 📚 Resources
+## Resources
 
 - [dbt Docs](https://docs.getdbt.com/)
 - [CoinGecko API](https://www.coingecko.com/en/api/documentation)
 - [Snowflake Window Functions](https://docs.snowflake.com/en/sql-reference/functions/window-functions)
 - [Apache Astro](https://www.astronomer.io/docs/astro/)
 
-## 📊 Language Composition
+## Language Composition
 
 - **Python** (98.9%): Data extraction and pipeline orchestration
 - **Dockerfile** (1.1%): Containerization for Astro
 
-## 🤝 Contributing
+## Contributing
 
 1. Create a feature branch from `codespace-refactored-space-fortnight-pjwjr7qgpwgphr9jw`
 2. Make changes and test locally with `dbt run && dbt test`
 3. Open a pull request with a clear description
 
-## 📄 License
+## License
 
 MIT
 
